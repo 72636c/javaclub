@@ -2,6 +2,8 @@
 
 JavaClub, also known as Java for short, is a café that can't quite remember its menu prices.
 
+<https://javaclub.herokuapp.com>
+
 ## Setup
 
 * [Ruby documentation](https://www.ruby-lang.org/en/documentation/)
@@ -14,5 +16,5 @@ JavaClub, also known as Java for short, is a café that can't quite remember its
 
 ```bash
 ruby Cafe.rb
-rspec Cafe_spec.rb --format doc
+rspec spec/Cafe_spec.rb --format doc
 ```
