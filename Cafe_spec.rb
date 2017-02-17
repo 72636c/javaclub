@@ -34,8 +34,8 @@ describe "Cafe" do
       @host + url,
       :body =>
       {
-        "order" => {"type" => "latte", "strength" => "strong","quantity" => 1},
-        "meta" => [{"url" => url, "methods" => ["POST"]}]
+        :order => {:type => "latte", :strength => "strong", :quantity => 1},
+        :meta => [{:url => url, :methods => ["POST"]}]
       }.to_json)
     url = JSON.parse(response)["meta"][0]["url"]
     expect(response.code).to eq(200)
@@ -46,8 +46,8 @@ describe "Cafe" do
       @host + url,
       :body =>
       {
-        "payment" => {"number" => 1234123412341234, "expiry_month" => 12, "expiry_year" => 1900,"cvv" => 123},
-        "meta" => [{"url" => url, "methods" => ["POST"]}]
+        :payment => {:number => 1234123412341234, :expiry_month => 12, :expiry_year => 1900, :cvv => 123},
+        :meta => [{:url => url, :methods => ["POST"]}]
       }.to_json)
     url = JSON.parse(response)["meta"][0]["url"]
     expect(response.code).to eq(200)
