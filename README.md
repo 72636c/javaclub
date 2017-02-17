@@ -6,8 +6,8 @@ JavaClub, also known as Java for short, is a café that can't quite remember its
 
 * [Ruby documentation](https://www.ruby-lang.org/en/documentation/)
 * [RSpec documentation](http://rspec.info/documentation/)
-* [HTTParty gem](https://rubygems.org/gems/httparty)
 * [JSON gem](https://rubygems.org/gems/json/)
+* [Rack::Test gem](https://rubygems.org/gems/rack-test)
 * [Sinatra gem](https://rubygems.org/gems/sinatra)
 
 ## Run
@@ -16,5 +16,3 @@ JavaClub, also known as Java for short, is a café that can't quite remember its
 ruby Cafe.rb
 rspec Cafe_spec.rb --format doc
 ```
-
-`Cafe_spec` requires an executing `Cafe` at `localhost:4567`.
