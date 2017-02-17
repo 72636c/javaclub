@@ -74,12 +74,12 @@ class Cafe < Sinatra::Base
 
     return status 406 unless request.accept?("application/json")
 
-    parsed_order = JSON.parse(request.body.read)[:order]
+    parsed_order = JSON.parse(request.body.read)["order"]
 
-    type = parsed_order[:type]
-    strength = parsed_order[:strength]
-    quantity = parsed_order[:quantity]
-    
+    type = parsed_order["type"]
+    strength = parsed_order["strength"]
+    quantity = parsed_order["quantity"]
+
     return status 400 unless Order.valid(type, strength, quantity)
 
     order = Order.new(type, strength, quantity)
@@ -129,12 +129,12 @@ class Cafe < Sinatra::Base
     serialized_order = Base64.urlsafe_decode64(encoded_order)
     order = Marshal.load(serialized_order)
 
-    parsed_payment = JSON.parse(request.body.read)[:payment]
+    parsed_payment = JSON.parse(request.body.read)["payment"]
 
-    number = parsed_payment[:number]
-    expiry_month = parsed_payment[:expiry_month]
-    expiry_year = parsed_payment[:expiry_year]
-    cvv = parsed_payment[:cvv]
+    number = parsed_payment["number"]
+    expiry_month = parsed_payment["expiry_month"]
+    expiry_year = parsed_payment["expiry_year"]
+    cvv = parsed_payment["cvv"]
 
     return status 400 unless Payment.valid(number, expiry_month, expiry_year, cvv)
 

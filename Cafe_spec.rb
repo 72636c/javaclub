@@ -1,57 +1,70 @@
-require "httparty"
 require "json"
+require "rack/test"
 require "rspec"
+
+require "./Cafe"
 
 describe "Cafe" do
 
-  before(:all) do
-    @host = "http://localhost:4567"
+  include Rack::Test::Methods
+
+  def app()
+    Cafe
   end
-  
+
   it "can serve a customer" do
     url = "/"
-    
+
     # GET /
-    response = HTTParty.get(@host + url)
-    url = JSON.parse(response)["meta"][0]["url"]
-    expect(response.code).to eq(200)
+    get url
+    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    expect(last_response).to be_ok
     expect(url).to eq("/menu")
 
     # GET /menu
-    response = HTTParty.get(@host + url)
-    url = JSON.parse(response)["meta"][0]["url"]
-    expect(response.code).to eq(200)
+    get url
+    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    expect(last_response).to be_ok
     expect(url).to eq("/order")
 
     # GET /order
-    response = HTTParty.get(@host + url)
-    url = JSON.parse(response)["meta"][0]["url"]
-    expect(response.code).to eq(200)
+    get url
+    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    expect(last_response).to be_ok
     expect(url).to eq("/order")
 
     # POST /order -> GET /payment
-    response = HTTParty.post(
-      @host + url,
-      :body =>
-      {
-        :order => {:type => "latte", :strength => "strong", :quantity => 1},
-        :meta => [{:url => url, :methods => ["POST"]}]
-      }.to_json)
-    url = JSON.parse(response)["meta"][0]["url"]
-    expect(response.code).to eq(200)
+    body =
+    {
+      :order => {:type => "latte", :strength => "strong", :quantity => 1},
+      :meta => [{:url => url, :methods => ["POST"]}]
+    }
+    post url, body.to_json
+    expect(last_response.status).to eq(302)
+    follow_redirect!
+    expect(last_response).to be_ok
+    
+    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    expect(last_response).to be_ok
     expect(url).to start_with("/payment")
-
+  
     # POST /payment -> GET /invoice
-    response = HTTParty.post(
-      @host + url,
-      :body =>
-      {
-        :payment => {:number => 1234123412341234, :expiry_month => 12, :expiry_year => 1900, :cvv => 123},
-        :meta => [{:url => url, :methods => ["POST"]}]
-      }.to_json)
-    url = JSON.parse(response)["meta"][0]["url"]
-    expect(response.code).to eq(200)
+    body =
+    {
+      :payment => {:number => 1234123412341234, :expiry_month => 12, :expiry_year => 1900, :cvv => 123},
+      :meta => [{:url => url, :methods => ["POST"]}]
+    }
+    post url, body.to_json
+    expect(last_response.status).to eq(302)
+    follow_redirect!
+    expect(last_response).to be_ok
+
+    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    expect(last_response).to be_ok
     expect(url).to eq("/")
+    expect(last_response.body).to include("latte")
+    expect(last_response.body).to include("strong")
+    expect(last_response.body).to include("1x")
 
   end
 
