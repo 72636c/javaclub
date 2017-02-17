@@ -1,7 +1,6 @@
 source "https://rubygems.org"
 
 group :test do
-  gem "rack"
   gem "rack-test"
   gem "rake"
   gem "rspec"
