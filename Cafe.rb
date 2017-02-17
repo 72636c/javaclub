@@ -1,168 +1,176 @@
 require "base64"
 require "json"
-require "sinatra"
+require "sinatra/base"
 
 require "./model/Invoice"
 require "./model/Order"
 require "./model/Payment"
 
-get "/" do
+class Cafe < Sinatra::Base
 
-  return status 406 unless request.accept?("application/json")
+  set :show_exceptions, false
 
-  meta = [
+  get "/" do
+
+    return status 406 unless request.accept?("application/json")
+
+    meta = [
+      {
+        :url => "/menu",
+        :methods => "GET"
+      }
+    ]
+
+    {:meta => meta}.to_json
+
+  end
+
+  get "/menu" do
+
+    return status 406 unless request.accept?("application/json")
+
+    menu =
     {
-      :url => "/menu",
-      :methods => "GET"
+      :type => Order::TYPES,
+      :strength => Order::STRENGTHS
     }
-  ]
 
-  {:meta => meta}.to_json
+    meta =
+    [
+      {
+        :url => "/order",
+        :methods => ["GET", "POST"]
+      }
+    ]
 
-end
+    {:menu => menu, :meta => meta}.to_json
 
-get "/menu" do
+  end
 
-  return status 406 unless request.accept?("application/json")
+  get "/order" do
 
-  menu =
-  {
-    :type => Order::TYPES,
-    :strength => Order::STRENGTHS
-  }
+    return status 406 unless request.accept?("application/json")
 
-  meta =
-  [
+    order =
     {
-      :url => "/order",
-      :methods => ["GET", "POST"]
+      :type => "",
+      :strength => "",
+      :quantity => 0
     }
-  ]
 
-  {:menu => menu, :meta => meta}.to_json
+    meta =
+    [
+      {
+        :url => "/order",
+        :methods => ["POST"]
+      }
+    ]
 
-end
+    {:order => order, :meta => meta}.to_json
 
-get "/order" do
+  end
 
-  return status 406 unless request.accept?("application/json")
+  post "/order" do
 
-  order =
-  {
-    :type => "",
-    :strength => "",
-    :quantity => 0
-  }
+    return status 406 unless request.accept?("application/json")
 
-  meta =
-  [
+    parsed_order = JSON.parse(request.body.read)[:order]
+
+    type = parsed_order[:type]
+    strength = parsed_order[:strength]
+    quantity = parsed_order[:quantity]
+    
+    return status 400 unless Order.valid(type, strength, quantity)
+
+    order = Order.new(type, strength, quantity)
+    serialized_order = Marshal.dump(order)
+    encoded_order = Base64.urlsafe_encode64(serialized_order)
+
+    redirect "/payment?id=#{encoded_order}", 302
+
+  end
+
+  get "/payment" do
+
+    return status 406 unless request.accept?("application/json")
+
+    encoded_order = params[:id]
+
+    return status 400 unless encoded_order
+    
+    payment =
     {
-      :url => "/order",
-      :methods => ["POST"]
+      :number => 0,
+      :expiry_month => 0,
+      :expiry_year => 0,
+      :cvv => 0
     }
-  ]
 
-  {:order => order, :meta => meta}.to_json
+    meta =
+    [
+      {
+        :url => "/payment?id=#{encoded_order}",
+        :methods => ["POST"]
+      }
+    ]
 
-end
+    {:payment => payment, :meta => meta}.to_json
 
-post "/order" do
+  end
 
-  return status 406 unless request.accept?("application/json")
+  post "/payment" do
 
-  parsed_order = JSON.parse(request.body.read)["order"]
+    return status 406 unless request.accept?("application/json")
 
-  type = parsed_order["type"]
-  strength = parsed_order["strength"]
-  quantity = parsed_order["quantity"]
-  
-  return status 400 unless Order.valid(type, strength, quantity)
+    encoded_order = params[:id]
+    
+    return status 400 unless encoded_order
+    
+    serialized_order = Base64.urlsafe_decode64(encoded_order)
+    order = Marshal.load(serialized_order)
 
-  order = Order.new(type, strength, quantity)
-  serialized_order = Marshal.dump(order)
-  encoded_order = Base64.urlsafe_encode64(serialized_order)
+    parsed_payment = JSON.parse(request.body.read)[:payment]
 
-  redirect "/payment?id=#{encoded_order}", 302
+    number = parsed_payment[:number]
+    expiry_month = parsed_payment[:expiry_month]
+    expiry_year = parsed_payment[:expiry_year]
+    cvv = parsed_payment[:cvv]
 
-end
+    return status 400 unless Payment.valid(number, expiry_month, expiry_year, cvv)
 
-get "/payment" do
+    payment = Payment.new(number, expiry_month, expiry_year, cvv)
+    invoice = Invoice.new(order, payment)
 
-  return status 406 unless request.accept?("application/json")
+    serialized_invoice = Marshal.dump(invoice)
+    encoded_invoice = Base64.urlsafe_encode64(serialized_invoice)
 
-  encoded_order = params["id"]
+    redirect "/invoice?id=#{encoded_invoice}", 302
 
-  return status 400 unless encoded_order
-  
-  payment =
-  {
-    :number => 0,
-    :expiry_month => 0,
-    :expiry_year => 0,
-    :cvv => 0
-  }
+  end
 
-  meta =
-  [
-    {
-      :url => "/payment?id=#{encoded_order}",
-      :methods => ["POST"]
-    }
-  ]
+  get "/invoice" do
 
-  {:payment => payment, :meta => meta}.to_json
+    return status 406 unless request.accept?("application/json")
 
-end
+    encoded_invoice = params[:id]
+    
+    return status 400 unless encoded_invoice
 
-post "/payment" do
+    serialized_invoice = Base64.urlsafe_decode64(encoded_invoice)
+    invoice = Marshal.load(serialized_invoice)
 
-  return status 406 unless request.accept?("application/json")
+    meta =
+    [
+      {
+        :url => "/",
+        :methods => ["GET"]
+      }
+    ]
 
-  encoded_order = params["id"]
-  
-  return status 400 unless encoded_order
-  
-  serialized_order = Base64.urlsafe_decode64(encoded_order)
-  order = Marshal.load(serialized_order)
+    {:invoice => invoice, :meta => meta}.to_json
 
-  parsed_payment = JSON.parse(request.body.read)["payment"]
+  end
 
-  number = parsed_payment["number"]
-  expiry_month = parsed_payment["expiry_month"]
-  expiry_year = parsed_payment["expiry_year"]
-  cvv = parsed_payment["cvv"]
-
-  return status 400 unless Payment.valid(number, expiry_month, expiry_year, cvv)
-
-  payment = Payment.new(number, expiry_month, expiry_year, cvv)
-  invoice = Invoice.new(order, payment)
-
-  serialized_invoice = Marshal.dump(invoice)
-  encoded_invoice = Base64.urlsafe_encode64(serialized_invoice)
-
-  redirect "/invoice?id=#{encoded_invoice}", 302
-
-end
-
-get "/invoice" do
-
-  return status 406 unless request.accept?("application/json")
-
-  encoded_invoice = params["id"]
-  
-  return status 400 unless encoded_invoice
-
-  serialized_invoice = Base64.urlsafe_decode64(encoded_invoice)
-  invoice = Marshal.load(serialized_invoice)
-
-  meta =
-  [
-    {
-      :url => "/",
-      :methods => ["GET"]
-    }
-  ]
-
-  {:invoice => invoice, :meta => meta}.to_json
+  run! if __FILE__ == $0
 
 end
