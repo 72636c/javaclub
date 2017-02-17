@@ -1,0 +1,2 @@
+require "./Cafe"
+Cafe.run!
