@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "2.2.2"
+ruby ">=2.2.2"
 
 group :test do
   gem "rack-test"
@@ -9,4 +9,5 @@ group :test do
 end
 
 gem "json"
+gem "pg"
 gem "sinatra"
