@@ -15,6 +15,6 @@ JavaClub, also known as Java for short, is a café that can't quite remember its
 ## Run
 
 ```bash
-ruby Cafe.rb
-rspec spec/Cafe_spec.rb --format doc
+ruby app.rb
+rspec spec/app_spec.rb --format doc
 ```

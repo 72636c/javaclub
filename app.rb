@@ -6,7 +6,7 @@ require "./model/Invoice"
 require "./model/Order"
 require "./model/Payment"
 
-class Cafe < Sinatra::Base
+class JavaClub < Sinatra::Base
 
   set :show_exceptions, false
 
