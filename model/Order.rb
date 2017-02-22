@@ -1,4 +1,4 @@
-# represents an order placed with the cafe
+# represents an order placed with JavaClub
 
 class Order
 

@@ -1,4 +1,4 @@
-# represents an invoice from the cafe that describes an order and its associated payment
+# represents a JavaClub invoice of an order and its associated payment
 
 class Invoice
   

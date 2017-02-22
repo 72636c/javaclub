@@ -2,14 +2,14 @@ require "json"
 require "rack/test"
 require "rspec"
 
-require "./Cafe"
+require "./app"
 
-describe "Cafe" do
+describe "JavaClub" do
 
   include Rack::Test::Methods
 
   def app()
-    Cafe
+    JavaClub
   end
 
   it "can serve a customer" do
