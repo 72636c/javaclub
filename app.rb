@@ -2,6 +2,7 @@ require "base64"
 require "json"
 require "sinatra/base"
 
+require "./config/environment"
 require "./model/Invoice"
 require "./model/Order"
 require "./model/Payment"
