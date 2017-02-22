@@ -1,3 +1,6 @@
+require "sinatra"
+require "./app.rb"
+
 configure :development do
   set :database, "sqlite:///dev.db"
   set :show_exceptions, true
