@@ -168,7 +168,7 @@ class JavaClub < Sinatra::Base
       }
     ]
 
-    {:invoice => invoice, :meta => meta}.to_json
+    {:invoice => invoice.to_s, :meta => meta}.to_json
 
   end
 
