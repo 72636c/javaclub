@@ -1,6 +1,6 @@
 # represents the credit card details provided to pay for an order
 
-class Payment
+class Payment < ActiveRecord::Base
 
   ValidNumber = Proc.new do |number|
     number.is_a?(Numeric) && number >= 0
@@ -24,16 +24,9 @@ class Payment
     ValidExpiryYear.call(expiry_year) &&
     ValidCVV.call(cvv)
   end
-  
-  def initialize(number, expiry_month, expiry_year, cvv)
-    @number = number
-    @expiry_month = expiry_month
-    @expiry_year = expiry_year
-    @cvv = cvv
-  end
 
   def to_s
-    "paid via #{@number}, #{@expiry_month}/#{@expiry_year}, #{@cvv}"
+    "paid via #{self.number}, #{self.expiry_month}/#{self.expiry_year}, #{self.cvv}"
   end
 
 end

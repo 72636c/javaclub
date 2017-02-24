@@ -1,14 +1,15 @@
-require "active_record"
-require "sinatra"
-require "sinatra/activerecord"
-
 configure :development do
-  set :database, "sqlite3:///dev.db"
+  set :database, "sqlite3:///development.sqlite3"
   set :show_exceptions, true
 end
 
-configure :test, :production do
-  db = URI.parse(ENV["DATABASE_URL"] || "postgres:///localhost/mydb")
+configure :test do
+  set :database, "sqlite3:///test.sqlite3"
+  set :show_exceptions, true
+end
+
+configure :production do
+  db = URI.parse(ENV["DATABASE_URL"] || "postgres:///localhost/db")
 
   ActiveRecord::Base.establish_connection(
     :adapter  => db.scheme == "postgres" ? "postgresql" : db.scheme,

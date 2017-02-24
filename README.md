@@ -1,4 +1,4 @@
-# JavaClub
+# JavaClub [![Build Status](https://travis-ci.org/rling-seek/JavaClub.svg?branch=feature%2Factiverecord)](https://travis-ci.org/rling-seek/JavaClub)
 
 JavaClub, also known as Java for short, is a café that can't quite remember its menu prices.
 
