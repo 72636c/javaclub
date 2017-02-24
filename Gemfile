@@ -16,10 +16,10 @@ end
 
 group :test do
   gem "rack-test"
-  gem "rake"
   gem "rspec"
 end
 
-group :production do
+group :test, :production do
   gem "pg"
+  gem "rake"
 end
