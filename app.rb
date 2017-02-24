@@ -1,14 +1,16 @@
 require "base64"
 require "json"
-require "sinatra/base"
+require "sinatra"
+require "sinatra/activerecord"
 
-require "./model/Invoice"
-require "./model/Order"
-require "./model/Payment"
+require "./config/environment"
+require "./model/invoice"
+require "./model/order"
+require "./model/payment"
 
-class Cafe < Sinatra::Base
+class JavaClub < Sinatra::Base
 
-  set :show_exceptions, false
+  register Sinatra::ActiveRecordExtension
 
   get "/" do
 
@@ -31,7 +33,7 @@ class Cafe < Sinatra::Base
 
     menu =
     {
-      :type => Order::TYPES,
+      :style => Order::STYLES,
       :strength => Order::STRENGTHS
     }
 
@@ -53,7 +55,7 @@ class Cafe < Sinatra::Base
 
     order =
     {
-      :type => "",
+      :style => "",
       :strength => "",
       :quantity => 0
     }
@@ -74,19 +76,21 @@ class Cafe < Sinatra::Base
 
     return status 406 unless request.accept?("application/json")
 
+    return status 400 unless request.body.size > 0
+
     parsed_order = JSON.parse(request.body.read)["order"]
 
-    type = parsed_order["type"]
+    style = parsed_order["style"]
     strength = parsed_order["strength"]
     quantity = parsed_order["quantity"]
 
-    return status 400 unless Order.valid(type, strength, quantity)
+    # TODO: investigate ActiveRecord validation
+    return status 400 unless Order.valid(style, strength, quantity)
 
-    order = Order.new(type, strength, quantity)
-    serialized_order = Marshal.dump(order)
-    encoded_order = Base64.urlsafe_encode64(serialized_order)
+    order = Order.create(style: style, strength: strength, quantity: quantity)
 
-    redirect "/payment?id=#{encoded_order}", 302
+    # TODO: generate GUID
+    redirect "/payment?id=#{order.id}", 302
 
   end
 
@@ -94,10 +98,10 @@ class Cafe < Sinatra::Base
 
     return status 406 unless request.accept?("application/json")
 
-    encoded_order = params[:id]
+    order_id = params[:id]
 
-    return status 400 unless encoded_order
-    
+    return status 400 unless order_id && Order.exists?(order_id)
+
     payment =
     {
       :number => 0,
@@ -109,7 +113,7 @@ class Cafe < Sinatra::Base
     meta =
     [
       {
-        :url => "/payment?id=#{encoded_order}",
+        :url => "/payment?id=#{order_id}",
         :methods => ["POST"]
       }
     ]
@@ -122,12 +126,13 @@ class Cafe < Sinatra::Base
 
     return status 406 unless request.accept?("application/json")
 
-    encoded_order = params[:id]
+    order_id = params[:id]
+
+    return status 400 unless order_id && Order.exists?(order_id)
     
-    return status 400 unless encoded_order
-    
-    serialized_order = Base64.urlsafe_decode64(encoded_order)
-    order = Marshal.load(serialized_order)
+    order = Order.find(order_id)
+
+    return status 400 unless request.body.size > 0
 
     parsed_payment = JSON.parse(request.body.read)["payment"]
 
@@ -136,15 +141,14 @@ class Cafe < Sinatra::Base
     expiry_year = parsed_payment["expiry_year"]
     cvv = parsed_payment["cvv"]
 
+    # TODO: investigate ActiveRecord validation
     return status 400 unless Payment.valid(number, expiry_month, expiry_year, cvv)
 
-    payment = Payment.new(number, expiry_month, expiry_year, cvv)
-    invoice = Invoice.new(order, payment)
+    payment = Payment.create(number: number, expiry_month: expiry_month, expiry_year: expiry_year, cvv: cvv)
+    invoice = Invoice.create(order: order, payment: payment)
 
-    serialized_invoice = Marshal.dump(invoice)
-    encoded_invoice = Base64.urlsafe_encode64(serialized_invoice)
-
-    redirect "/invoice?id=#{encoded_invoice}", 302
+    # TODO: generate GUID
+    redirect "/invoice?id=#{invoice.id}", 302
 
   end
 
@@ -152,12 +156,11 @@ class Cafe < Sinatra::Base
 
     return status 406 unless request.accept?("application/json")
 
-    encoded_invoice = params[:id]
+    invoice_id = params[:id]
     
-    return status 400 unless encoded_invoice
+    return status 400 unless invoice_id && Invoice.exists?(invoice_id)
 
-    serialized_invoice = Base64.urlsafe_decode64(encoded_invoice)
-    invoice = Marshal.load(serialized_invoice)
+    invoice = Invoice.find(invoice_id)
 
     meta =
     [
@@ -167,7 +170,7 @@ class Cafe < Sinatra::Base
       }
     ]
 
-    {:invoice => invoice, :meta => meta}.to_json
+    {:invoice => invoice.to_s, :meta => meta}.to_json
 
   end
 

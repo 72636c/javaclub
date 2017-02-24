@@ -2,14 +2,14 @@ require "json"
 require "rack/test"
 require "rspec"
 
-require "./Cafe"
+require "./app"
 
-describe "Cafe" do
+describe "JavaClub" do
 
   include Rack::Test::Methods
 
   def app()
-    Cafe
+    JavaClub
   end
 
   it "can serve a customer" do
@@ -39,7 +39,7 @@ describe "Cafe" do
     # POST /order -> GET /payment
     body =
     {
-      :order => {:type => "latte", :strength => "strong", :quantity => 1},
+      :order => {:style => "latte", :strength => "strong", :quantity => 1},
       :meta => [{:url => url, :methods => ["POST"]}]
     }
     post url, body.to_json
