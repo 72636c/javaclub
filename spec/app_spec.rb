@@ -39,7 +39,7 @@ describe "JavaClub" do
     # POST /order -> GET /payment
     body =
     {
-      :order => {:type => "latte", :strength => "strong", :quantity => 1},
+      :order => {:style => "latte", :strength => "strong", :quantity => 1},
       :meta => [{:url => url, :methods => ["POST"]}]
     }
     post url, body.to_json

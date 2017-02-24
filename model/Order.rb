@@ -1,12 +1,12 @@
 # represents an order placed with JavaClub
 
-class Order
+class Order < ActiveRecord::Base
 
-  TYPES = ["cappuccino", "flat white", "latte"]
+  STYLES = ["cappuccino", "flat white", "latte"]
   STRENGTHS = ["mild", "medium", "strong"]
-  
-  ValidType = Proc.new do |type|
-    TYPES.include?(type)
+
+  ValidStyle = Proc.new do |style|
+    STYLES.include?(style)
   end
 
   ValidStrength = Proc.new do |strength|
@@ -17,21 +17,19 @@ class Order
     quantity.is_a?(Numeric) && quantity > 0
   end
 
-  def self.valid(type, strength, quantity)
-    ValidType.call(type) &&
+  def self.valid(style, strength, quantity)
+    ValidStyle.call(style) &&
     ValidStrength.call(strength) &&
     ValidQuantity.call(quantity)
   end
 
-  def initialize(type, strength, quantity)
-    @type = type
-    @strength = strength
-    @quantity = quantity
-    @price = Random.rand(1..100)
+  def self.price
+    # TODO: this is fantastic
+    Random.rand(1..100)
   end
 
   def to_s
-    "#{@quantity}x #{@strength} #{@type} = $#{@price}"
+    "#{self.quantity}x #{self.strength} #{self.style} = $#{Order.price}"
   end
 
 end

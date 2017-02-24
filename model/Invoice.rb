@@ -1,14 +1,12 @@
 # represents a JavaClub invoice of an order and its associated payment
 
-class Invoice
-  
-  def initialize(order, payment)
-    @order = order
-    @payment = payment
-  end
+class Invoice < ActiveRecord::Base
+
+  belongs_to :order
+  belongs_to :payment
 
   def to_s
-    @order.to_s + ", " + @payment.to_s
+    self.order.to_s + ", " + self.payment.to_s
   end
 
 end
