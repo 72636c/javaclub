@@ -100,10 +100,8 @@ class JavaClub < Sinatra::Base
 
     order_id = params[:id]
 
-    puts "THIS IS A GET REQUEST FOR " + order_id
-
     return status 400 unless order_id && Order.exists?(order_id)
-    
+
     payment =
     {
       :number => 0,
