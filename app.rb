@@ -4,9 +4,9 @@ require "sinatra"
 require "sinatra/activerecord"
 
 require "./config/environment"
-require "./model/invoice"
-require "./model/order"
-require "./model/payment"
+require "./models/invoice"
+require "./models/order"
+require "./models/payment"
 
 class JavaClub < Sinatra::Base
 
