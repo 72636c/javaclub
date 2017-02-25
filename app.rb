@@ -14,7 +14,16 @@ class JavaClub < Sinatra::Base
 
   get "/" do
 
-    erb :index
+    return status 406 unless request.accept?("application/json")
+
+    meta = [
+      {
+        :url => "/menu",
+        :methods => "GET"
+      }
+    ]
+
+    {:meta => meta}.to_json
 
   end
 
