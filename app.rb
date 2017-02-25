@@ -1,6 +1,6 @@
 require "base64"
 require "json"
-require "sinatra"
+require "sinatra/base"
 require "sinatra/activerecord"
 
 require "./config/environment"
@@ -173,5 +173,7 @@ class JavaClub < Sinatra::Base
     {:invoice => invoice.to_s, :meta => meta}.to_json
 
   end
+
+  run! if __FILE__ == $0
 
 end
