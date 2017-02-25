@@ -14,16 +14,7 @@ class JavaClub < Sinatra::Base
 
   get "/" do
 
-    return status 406 unless request.accept?("application/json")
-
-    meta = [
-      {
-        :url => "/menu",
-        :methods => "GET"
-      }
-    ]
-
-    {:meta => meta}.to_json
+    erb :index
 
   end
 
@@ -173,7 +164,5 @@ class JavaClub < Sinatra::Base
     {:invoice => invoice.to_s, :meta => meta}.to_json
 
   end
-
-  run! if __FILE__ == $0
 
 end
