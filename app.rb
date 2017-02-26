@@ -94,20 +94,19 @@ class JavaClub < Sinatra::Base
 
     return status 400 unless request.body.size > 0
 
-    begin
-
-      parsed_order = JSON.parse(request.body.read)["order"]
-      style = parsed_order["style"]
-      strength = parsed_order["strength"]
-      quantity = parsed_order["quantity"]
-
-    rescue JSON::ParserError
-
+    if request.content_type =~ /json/
+      begin
+        parsed_order = JSON.parse(request.body.read)["order"]
+        style = parsed_order["style"]
+        strength = parsed_order["strength"]
+        quantity = parsed_order["quantity"]
+      rescue JSON::ParserError
+        return status 400
+      end
+    elsif request.content_type =~ /x-www-form-urlencoded/
       style = params[:style]
       strength = params[:strength]
       quantity = params[:quantity].to_i
-      return status 400 unless style.present? && strength.present? && quantity.present?
-
     end
 
     # TODO: investigate ActiveRecord validation
@@ -162,22 +161,21 @@ class JavaClub < Sinatra::Base
 
     return status 400 unless request.body.size > 0
 
-    begin
-
-      parsed_payment = JSON.parse(request.body.read)["payment"]
-      number = parsed_payment["number"]
-      expiry_month = parsed_payment["expiry_month"]
-      expiry_year = parsed_payment["expiry_year"]
-      cvv = parsed_payment["cvv"]
-
-    rescue JSON::ParserError
-
+    if request.content_type =~ /json/
+      begin
+        parsed_payment = JSON.parse(request.body.read)["payment"]
+        number = parsed_payment["number"]
+        expiry_month = parsed_payment["expiry_month"]
+        expiry_year = parsed_payment["expiry_year"]
+        cvv = parsed_payment["cvv"]
+      rescue JSON::ParserError
+        return status 400
+      end
+    elsif request.content_type =~ /x-www-form-urlencoded/
       number = params[:number].to_i
       expiry_month = params[:expiry_month].to_i
       expiry_year = params[:expiry_year].to_i
       cvv = params[:cvv].to_i
-      return status 400 unless number.present? && expiry_month.present? && expiry_year.present? && cvv.present?
-
     end
 
     # TODO: investigate ActiveRecord validation

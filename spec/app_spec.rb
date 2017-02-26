@@ -48,7 +48,7 @@ describe "JavaClub" do
       :order => {:style => "latte", :strength => "strong", :quantity => 1},
       :meta => [{:url => url, :methods => ["POST"]}]
     }
-    post url, body.to_json
+    post url, body.to_json, {"CONTENT_TYPE" => "application/json"}
     expect(last_response.status).to eq(302)
     follow_redirect!
     expect(last_response).to be_ok
@@ -62,7 +62,7 @@ describe "JavaClub" do
       :payment => {:number => 1234123412341234, :expiry_month => 12, :expiry_year => 1900, :cvv => 123},
       :meta => [{:url => url, :methods => ["POST"]}]
     }
-    post url, body.to_json
+    post url, body.to_json, {"CONTENT_TYPE" => "application/json"}
     expect(last_response.status).to eq(302)
     follow_redirect!
     expect(last_response).to be_ok
