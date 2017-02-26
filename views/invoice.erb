@@ -1,0 +1,38 @@
+<section>
+  <h2>
+    <span class="breadcrumbs-before">Order</span>
+    <span class="breadcrumbs-separator"> &rsaquo; </span>
+    <span class="breadcrumbs-before">Pay</span>
+    <span class="breadcrumbs-separator"> &rsaquo; </span>
+    <span class="breadcrumbs-current">Invoice</span>
+  </h2>
+  <h3>Order Details</h3>
+  <table>
+    <tr>
+      <th>Style</th>
+      <th>Strength</th>
+      <th class="text-right">Quantity</th>
+      <th class="text-right">Total</th>
+    </tr>
+    <tr>
+      <td><%= @invoice.order.style %></td>
+      <td><%= @invoice.order.strength %></td>
+      <td class="text-right"><%= @invoice.order.quantity %></td>
+      <td class="text-right">$<%= @invoice.order.price %></td>
+    </tr>
+  </table>
+  <h3>Payment Details</h3>
+  <table>
+    <tr>
+      <th class="text-right">Card Number</th>
+      <th class="text-right">Expiry</th>
+      <th class="text-right">CVV</th>
+    </tr>
+    <tr>
+      <td class="text-right"><%= @invoice.payment.number %></td>
+      <td class="text-right"><%= @invoice.payment.expiry_month.to_s + "/" + @invoice.payment.expiry_year.to_s %></td>
+      <td class="text-right"><%= @invoice.payment.cvv %></td>
+    </tr>
+  </table>
+  <p>Keep clubbing!</p>
+</section>

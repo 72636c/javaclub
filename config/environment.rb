@@ -1,3 +1,5 @@
+require "sinatra"
+
 configure :development do
   set :database, "sqlite3:///development.sqlite3"
   set :show_exceptions, true
