@@ -1,2 +1,2 @@
 require "./app"
-JavaClub.run!
+Cafe.run!
