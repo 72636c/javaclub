@@ -1,0 +1,265 @@
+body
+{
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+}
+
+footer
+{
+  background-color: rgb(43, 35, 33);
+  color: white;
+  padding: 2em 0;
+  margin-top: 2em;
+}
+
+fieldset
+{
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+footer code
+{
+  background-color: rgb(65, 53, 60);
+}
+
+pre code
+{
+  display: block;
+  white-space: pre-wrap;
+  padding: 1em;
+}
+
+section,
+.wrap
+{
+  display: block;
+  margin: 0 auto;
+  max-width: 960px;
+  box-sizing: border-box;
+  padding: 0 1em;
+}
+
+section + section
+{
+  padding-top: 2em;
+}
+
+section + section:before
+{
+  content: "―";
+  color: rgb(169, 148, 143);
+  display: block;
+  position: relative;
+  text-align: center;
+  padding-bottom: 2em;
+}
+
+table
+{
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+th
+{
+  text-align: left;
+}
+
+th, td
+{
+  padding: 1em;
+  border: 0.1rem solid rgb(169, 148, 143);
+}
+
+summary
+{
+  cursor: pointer;
+}
+
+input[type="text"]
+{
+  border: 0.2rem solid rgb(169, 148, 143);
+  padding: 1em;
+}
+
+input[type="text"]:focus
+{
+  background-color: rgb(169, 148, 143);
+  outline: none;
+}
+
+input[type="submit"],
+button
+{
+  background-color: rgb(65, 53, 60);
+  color: white;
+  border: 0;
+  padding: 1em 2em;
+  transition: transform 0.25s;
+}
+
+input[type="submit"]:focus,
+button:focus
+{
+  outline: 0.2rem solid rgb(169, 148, 143);
+}
+
+input[type="submit"]:hover,
+button:hover
+{
+  cursor: pointer;
+  transform: translateY(0.1rem);
+}
+
+input[type="submit"]:active,
+button:active
+{
+  background-color: rgb(169, 148, 143);
+  outline: none;
+}
+
+input + input
+{
+  margin-left: 1em;
+}
+
+.wrap
+{
+  margin: 0 auto;
+}
+
+.left
+{
+  float: left;
+}
+
+.right
+{
+  float: right;
+}
+
+.text-right
+{
+  text-align: right;
+}
+
+.container
+{
+  display: table;
+}
+
+footer .col-2
+{
+  vertical-align: top;
+}
+
+.col-2
+{
+  display: table-cell;
+  width: 50%;
+  vertical-align: middle;
+}
+
+.col-2:first-child
+{
+  padding-right: 1em;
+}
+
+.col-2:last-child
+{
+  padding-left: 1em;
+}
+
+.col-2 img
+{
+  max-width: 100%;
+}
+
+.menu-separator,
+{
+  color: rgb(169, 148, 143);
+}
+
+.breadcrumbs-before,
+.breadcrumbs-separator,
+.breadcrumbs-after
+{
+  font-weight: normal;
+}
+
+.breadcrumbs-current
+{
+  font-weight: bold;
+}
+
+.breadcrumbs-current + .breadcrumbs-separator,
+.breadcrumbs-after + .breadcrumbs-separator,
+.breadcrumbs-after
+{
+  color: rgb(169, 148, 143);
+}
+
+header
+{
+  position: fixed;
+  width: 100%;
+  background-color: rgba(65, 53, 60, 0.9);
+  color: white;
+  padding: 1em 0;
+  line-height: 5em;
+  border-bottom: 0.1rem solid rgb(169, 148, 143);
+}
+
+header a,
+header a:link,
+header a:visited
+{
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.25s, border-bottom 0.25s;
+  border-bottom: 0.1rem solid transparent;
+}
+
+header a:hover,
+header a:active
+{
+  color: rgb(169, 148, 143);
+  border-bottom: 0.1rem solid rgb(169, 148, 143);
+}
+
+#header-spacer
+{
+  background-color: rgb(65, 53, 60);
+  height: 5em;
+  padding: 1em;
+  border-bottom: 0.1rem;
+  margin-bottom: 2em;
+}
+
+#logo:hover
+{
+  border-bottom: 0;
+}
+
+#logo img
+{
+  max-height: 5em;
+  max-width: 5em;
+  transition: transform 0.25s;
+  outline: 0.1rem solid transparent;
+}
+
+#logo img:hover
+{
+  transform: rotate(3deg);
+  outline: 0.1rem solid transparent;
+}
+
+#content
+{
+  min-height: 100%;
+}

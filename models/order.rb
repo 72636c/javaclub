@@ -23,13 +23,13 @@ class Order < ActiveRecord::Base
     ValidQuantity.call(quantity)
   end
 
-  def self.price
+  def price
     # TODO: this is fantastic
     Random.rand(1..100)
   end
 
   def to_s
-    "#{self.quantity}x #{self.strength} #{self.style} = $#{Order.price}"
+    "#{self.quantity}x #{self.strength} #{self.style} = $#{self.price}"
   end
 
 end

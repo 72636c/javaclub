@@ -1,8 +1,14 @@
 require "json"
+require "nokogiri"
 require "rack/test"
 require "rspec"
 
 require "./app"
+
+def get_url(html_doc)
+  json_response = Nokogiri::HTML(html_doc).search("#json-response").text
+  JSON.parse(json_response)["meta"][0]["url"]
+end
 
 describe "JavaClub" do
 
@@ -17,21 +23,21 @@ describe "JavaClub" do
 
     # GET /
     get url
-    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    url = get_url(last_response.body)
     expect(last_response).to be_ok
 
     expect(url).to eq("/menu")
 
     # GET /menu
     get url
-    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    url = get_url(last_response.body)
     expect(last_response).to be_ok
 
     expect(url).to eq("/order")
 
     # GET /order
     get url
-    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    url = get_url(last_response.body)
     expect(last_response).to be_ok
 
     expect(url).to eq("/order")
@@ -47,7 +53,7 @@ describe "JavaClub" do
     follow_redirect!
     expect(last_response).to be_ok
 
-    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    url = get_url(last_response.body)
     expect(url).to start_with("/payment")
 
     # POST /payment -> GET /invoice
@@ -61,11 +67,11 @@ describe "JavaClub" do
     follow_redirect!
     expect(last_response).to be_ok
 
-    url = JSON.parse(last_response.body)["meta"][0]["url"]
+    url = get_url(last_response.body)
     expect(url).to eq("/")
     expect(last_response.body).to include("latte")
     expect(last_response.body).to include("strong")
-    expect(last_response.body).to include("1x")
+    expect(last_response.body).to include("1")
 
   end
 
