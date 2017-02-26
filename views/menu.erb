@@ -1,9 +1,17 @@
 <section>
   <h2>Styles</h2>
-  <p>Coffee</p>
+  <ul class="options">
+    <% Order::STYLES.each do |item| %>
+      <li><%= item %></li>
+    <% end %>
+  </ul>
 </section>
 
 <section>
   <h2>Strengths</h2>
-  <p>Strong</p>
+  <ul class="options">
+    <% Order::STRENGTHS.each do |item| %>
+      <li><%= item %></li>
+    <% end %>
+  </ul>
 </section>

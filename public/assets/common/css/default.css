@@ -150,6 +150,20 @@ input + input
   display: table;
 }
 
+ul.options
+{
+  padding: 0;
+  margin: 0;
+}
+
+ul.options li
+{
+  background-color: rgb(239, 240, 241);
+  display: inline-block;
+  padding: 2em;
+  text-transform: capitalize;
+}
+
 footer .col-2
 {
   vertical-align: top;
