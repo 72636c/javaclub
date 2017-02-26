@@ -1,16 +1,26 @@
 require "base64"
 require "json"
-require "sinatra"
+require "sinatra/base"
 require "sinatra/activerecord"
 
 require "./config/environment"
-require "./model/invoice"
-require "./model/order"
-require "./model/payment"
+require "./models/invoice"
+require "./models/order"
+require "./models/payment"
 
 class JavaClub < Sinatra::Base
 
   register Sinatra::ActiveRecordExtension
+
+  error 400 do
+    status 400
+    erb :"400"
+  end
+
+  not_found do
+    status 404
+    erb :"404"
+  end
 
   get "/" do
 
@@ -23,7 +33,9 @@ class JavaClub < Sinatra::Base
       }
     ]
 
-    {:meta => meta}.to_json
+    @json_response = {:meta => meta}.to_json
+
+    erb :index
 
   end
 
@@ -45,7 +57,9 @@ class JavaClub < Sinatra::Base
       }
     ]
 
-    {:menu => menu, :meta => meta}.to_json
+    @json_response = {:menu => menu, :meta => meta}.to_json
+
+    erb :menu
 
   end
 
@@ -68,7 +82,9 @@ class JavaClub < Sinatra::Base
       }
     ]
 
-    {:order => order, :meta => meta}.to_json
+    @json_response = {:order => order, :meta => meta}.to_json
+
+    erb :order
 
   end
 
@@ -78,11 +94,20 @@ class JavaClub < Sinatra::Base
 
     return status 400 unless request.body.size > 0
 
-    parsed_order = JSON.parse(request.body.read)["order"]
-
-    style = parsed_order["style"]
-    strength = parsed_order["strength"]
-    quantity = parsed_order["quantity"]
+    if request.content_type =~ /json/
+      begin
+        parsed_order = JSON.parse(request.body.read)["order"]
+        style = parsed_order["style"]
+        strength = parsed_order["strength"]
+        quantity = parsed_order["quantity"]
+      rescue JSON::ParserError
+        return status 400
+      end
+    elsif request.content_type =~ /x-www-form-urlencoded/
+      style = params[:style]
+      strength = params[:strength]
+      quantity = params[:quantity].to_i
+    end
 
     # TODO: investigate ActiveRecord validation
     return status 400 unless Order.valid(style, strength, quantity)
@@ -118,7 +143,9 @@ class JavaClub < Sinatra::Base
       }
     ]
 
-    {:payment => payment, :meta => meta}.to_json
+    @json_response = {:payment => payment, :meta => meta}.to_json
+
+    erb :payment
 
   end
 
@@ -134,12 +161,22 @@ class JavaClub < Sinatra::Base
 
     return status 400 unless request.body.size > 0
 
-    parsed_payment = JSON.parse(request.body.read)["payment"]
-
-    number = parsed_payment["number"]
-    expiry_month = parsed_payment["expiry_month"]
-    expiry_year = parsed_payment["expiry_year"]
-    cvv = parsed_payment["cvv"]
+    if request.content_type =~ /json/
+      begin
+        parsed_payment = JSON.parse(request.body.read)["payment"]
+        number = parsed_payment["number"]
+        expiry_month = parsed_payment["expiry_month"]
+        expiry_year = parsed_payment["expiry_year"]
+        cvv = parsed_payment["cvv"]
+      rescue JSON::ParserError
+        return status 400
+      end
+    elsif request.content_type =~ /x-www-form-urlencoded/
+      number = params[:number].to_i
+      expiry_month = params[:expiry_month].to_i
+      expiry_year = params[:expiry_year].to_i
+      cvv = params[:cvv].to_i
+    end
 
     # TODO: investigate ActiveRecord validation
     return status 400 unless Payment.valid(number, expiry_month, expiry_year, cvv)
@@ -160,7 +197,7 @@ class JavaClub < Sinatra::Base
     
     return status 400 unless invoice_id && Invoice.exists?(invoice_id)
 
-    invoice = Invoice.find(invoice_id)
+    @invoice = Invoice.find(invoice_id)
 
     meta =
     [
@@ -170,7 +207,9 @@ class JavaClub < Sinatra::Base
       }
     ]
 
-    {:invoice => invoice.to_s, :meta => meta}.to_json
+    @json_response = {:invoice => @invoice.to_s, :meta => meta}.to_json
+
+    erb :invoice
 
   end
 

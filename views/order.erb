@@ -1,0 +1,39 @@
+<section>
+    <h2>
+    <span class="breadcrumbs-current">Order</span>
+    <span class="breadcrumbs-separator"> &rsaquo; </span>
+    <span class="breadcrumbs-after">Pay</span>
+    <span class="breadcrumbs-separator"> &rsaquo; </span>
+    <span class="breadcrumbs-after">Invoice</span>
+  </h2>
+  <form action="/order" method="POST">
+    <h3>Style</h3>
+    <fieldset id="style">
+      <input type="radio" name="style" id="style-cappuccino" value="cappuccino" />
+      <label for="style-cappuccino">Cappuccino</label>
+      <br />
+      <input type="radio" name="style" id="style-flat-white" value="flat white" />
+      <label for="style-flat-white">Flat White</label>
+      <br />
+      <input type="radio" name="style" id="style-latte" value="latte" />
+      <label for="style-latte">Latte</label>
+    </fieldset>
+    <h3>Strength</h3>
+    <fieldset id="strength">
+      <input type="radio" name="strength" id="strength-mild" value="mild" />
+      <label for="strength-mild">Mild</label>
+      <br />
+      <input type="radio" name="strength" id="strength-medium" value="medium" />
+      <label for="strength-medium">Medium</label>
+      <br />
+      <input type="radio" name="strength" id="strength-strong" value="strong" />
+      <label for="strength-strong">Strong</label>
+    </fieldset>
+    <h3>Quantity</h3>
+    <input type="text" name="quantity" />
+    <br />
+    <br />
+    <br />
+    <input type="submit" value="Submit" />
+  </form>
+</section>

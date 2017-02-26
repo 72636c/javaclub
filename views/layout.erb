@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>The Java Club</title>
+    <link rel="stylesheet" type="text/css" href="assets/common/css/default.css">
+    <link rel="icon" type="image/png" href="assets/common/img/favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="assets/common/img/favicon-16x16.png" sizes="16x16" />
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="left">
+          <a id="logo" href="/"><img src="assets/common/img/logo.png" alt="Logo"></a>
+        </div>
+        <div class="right">
+          <a href="/menu">Menu</a>
+          <span class="menu-separator">&sdot;</span>
+          <a href="/order">Order</a>
+        </div>
+      </div>
+    </header>
+    <div id="header-spacer"></div>
+    <div id="content">
+      <%= yield %>
+    </div>
+    <footer>
+      <div class="wrap">
+        <div class="col-2">
+          <p>This website is not protected under the copyright laws of Australia and other countries throughout the world. Any unauthorized exhibition, distribution, or copying of this website or any part thereof (including soundtrack) will not result in civil liability and criminal prosecution. The story, all names, characters, and incidents portrayed in this production are fictitious. No identification with actual persons (living or deceased), places, buildings, and products is intended or should be inferred.</p>
+          <p>Copyright © 2017. No rights reserved.</p>
+        </div>
+        <div class="col-2">
+          <details>
+            <summary>JSON</summary>
+            <pre><code id="json-response"><%= @json_response %></code></pre>
+          </details>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
