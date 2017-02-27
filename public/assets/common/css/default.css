@@ -4,6 +4,11 @@ body
   margin: 0;
 }
 
+html, body
+{
+  height: 100%;
+}
+
 footer
 {
   background-color: rgb(43, 35, 33);
@@ -56,15 +61,28 @@ section + section:before
   padding-bottom: 2em;
 }
 
-section > :first-child
+
+section > :first-child,
+.col-2 > :first-child
 {
   margin-top: 0;
+}
+
+section > :last-child,
+.col-2 > :last-child
+{
+  margin-bottom: 0;
 }
 
 table
 {
   border-spacing: 0;
   border-collapse: collapse;
+}
+
+table tr:first-child > th
+{
+  background-color: rgb(169, 148, 143);
 }
 
 th
@@ -75,10 +93,12 @@ th
 th, td
 {
   padding: 1em;
-  border: 0.1rem solid rgb(169, 148, 143);
+  border: 0.1rem solid black;
 }
 
-summary
+summary,
+input[type="radio"],
+label
 {
   cursor: pointer;
 }
@@ -92,6 +112,7 @@ input[type="text"]
 {
   border: 0.2rem solid rgb(169, 148, 143);
   padding: 1em;
+  transition: background-color 0.25s;
 }
 
 input[type="text"]:focus
@@ -107,7 +128,7 @@ button
   color: white;
   border: 0;
   padding: 1em 2em;
-  transition: transform 0.25s;
+  transition: background-color 0.25s, transform 0.25s;
 }
 
 input[type="submit"]:focus,
@@ -263,6 +284,11 @@ header a:active
 {
   color: rgb(169, 148, 143);
   border-bottom: 0.1rem solid rgb(169, 148, 143);
+}
+
+header .left
+{
+  line-height: 0;
 }
 
 #header-spacer
