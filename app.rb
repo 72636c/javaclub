@@ -8,7 +8,7 @@ require "./models/invoice"
 require "./models/order"
 require "./models/payment"
 
-class JavaClub < Sinatra::Base
+class Cafe < Sinatra::Base
 
   register Sinatra::ActiveRecordExtension
 

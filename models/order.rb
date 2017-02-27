@@ -1,4 +1,4 @@
-# represents an order placed with JavaClub
+# represents an order placed with the cafe
 
 class Order < ActiveRecord::Base
 
