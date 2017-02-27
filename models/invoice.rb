@@ -1,4 +1,4 @@
-# represents a JavaClub invoice of an order and its associated payment
+# represents a cafe invoice of an order and its associated payment
 
 class Invoice < ActiveRecord::Base
 

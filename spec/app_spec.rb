@@ -10,12 +10,12 @@ def get_url(html_doc)
   JSON.parse(json_response)["meta"][0]["url"]
 end
 
-describe "JavaClub" do
+describe "Cafe" do
 
   include Rack::Test::Methods
 
   def app()
-    JavaClub
+    Cafe
   end
 
   it "can serve a customer" do
