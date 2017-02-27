@@ -115,11 +115,11 @@ class Cafe < Sinatra::Base
     order = Order.create(style: style, strength: strength, quantity: quantity)
 
     # TODO: generate GUID
-    redirect "/payment?id=#{order.id}", 302
+    redirect "/payment/#{order.id}", 302
 
   end
 
-  get "/payment" do
+  get "/payment/:id" do
 
     return status 406 unless request.accept?("application/json")
 
@@ -138,7 +138,7 @@ class Cafe < Sinatra::Base
     meta =
     [
       {
-        :url => "/payment?id=#{order_id}",
+        :url => "/payment/#{order_id}",
         :methods => ["POST"]
       }
     ]
@@ -149,7 +149,7 @@ class Cafe < Sinatra::Base
 
   end
 
-  post "/payment" do
+  post "/payment/:id" do
 
     return status 406 unless request.accept?("application/json")
 
@@ -185,11 +185,11 @@ class Cafe < Sinatra::Base
     invoice = Invoice.create(order: order, payment: payment)
 
     # TODO: generate GUID
-    redirect "/invoice?id=#{invoice.id}", 302
+    redirect "/invoice/#{invoice.id}", 302
 
   end
 
-  get "/invoice" do
+  get "/invoice/:id" do
 
     return status 406 unless request.accept?("application/json")
 
