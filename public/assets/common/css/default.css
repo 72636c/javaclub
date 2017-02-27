@@ -78,6 +78,11 @@ summary
   cursor: pointer;
 }
 
+input
+{
+  font-size: 1em;
+}
+
 input[type="text"]
 {
   border: 0.2rem solid rgb(169, 148, 143);
