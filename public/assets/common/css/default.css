@@ -56,12 +56,7 @@ section + section:before
   padding-bottom: 2em;
 }
 
-section > h1,
-section > h2,
-section > h3,
-section > h4,
-section > h5,
-section > h6
+section > :first-child
 {
   margin-top: 0;
 }
