@@ -279,7 +279,12 @@ header a:visited
   border-bottom: 0.1rem solid transparent;
 }
 
-header a:hover,
+header a:hover
+{
+  color: white;
+  border-bottom: 0.1rem solid white;
+}
+
 header a:active
 {
   color: rgb(169, 148, 143);
@@ -316,6 +321,12 @@ header .left
 #logo img:hover
 {
   transform: rotate(3deg);
+  outline: 0.1rem solid transparent;
+}
+
+#logo img:active
+{
+  transform: rotate(3deg) scale(0.9);
   outline: 0.1rem solid transparent;
 }
 
