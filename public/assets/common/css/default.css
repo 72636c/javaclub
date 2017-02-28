@@ -103,6 +103,7 @@ label
   cursor: pointer;
 }
 
+button,
 input
 {
   font-size: 1em;
