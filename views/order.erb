@@ -10,21 +10,21 @@
     <h3>Style</h3>
     <fieldset id="style">
       <% Order::STYLES.each do |item| %>
-        <input type="radio" name="style" id=<%= "style-" + item %> value=<%= item %> />
-        <label for=<%= "style-" + item %>><%= item.titleize %></label>
+        <input type="radio" name="style" id="<%= "style-" + item.gsub(" ","-") %>" value="<%= item %>" />
+        <label for="<%= "style-" + item.gsub(" ","-") %>"><%= item.titleize %></label>
         <br />
       <% end %>
     </fieldset>
     <h3>Strength</h3>
     <fieldset id="strength">
       <% Order::STRENGTHS.each do |item| %>
-        <input type="radio" name="strength" id=<%= "strength-" + item %> value=<%= item %> />
-        <label for=<%= "strength-" + item %>><%= item.titleize %></label>
+        <input type="radio" name="strength" id="<%= "strength-" + item.gsub(" ","-") %>" value="<%= item %>" />
+        <label for="<%= "strength-" + item.gsub(" ","-") %>"><%= item.titleize %></label>
         <br />
       <% end %>
     </fieldset>
     <h3>Quantity</h3>
-    <input type="text" name="quantity" />
+    <input type="text" name="quantity" placeholder="1–9999" maxlength="4" />
     <br />
     <br />
     <br />

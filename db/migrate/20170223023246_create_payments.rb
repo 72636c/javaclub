@@ -1,10 +1,9 @@
 class CreatePayments < ActiveRecord::Migration[5.0]
   def change
     create_table :payments do |t|
-      t.bigint :number
-      t.integer :expiry_month
-      t.integer :expiry_year
-      t.integer :cvv
+      t.string :number, :limit => 19
+      t.date :expiry
+      t.string :cvv, :limit => 4
       t.timestamps
     end
   end

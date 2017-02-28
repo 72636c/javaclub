@@ -15,8 +15,8 @@
       <th class="text-right">Total</th>
     </tr>
     <tr>
-      <td><%= @invoice.order.style %></td>
-      <td><%= @invoice.order.strength %></td>
+      <td><%= @invoice.order.style.titleize %></td>
+      <td><%= @invoice.order.strength.titleize %></td>
       <td class="text-right"><%= @invoice.order.quantity %></td>
       <td class="text-right">$<%= @invoice.order.price %></td>
     </tr>
@@ -30,7 +30,7 @@
     </tr>
     <tr>
       <td class="text-right"><%= @invoice.payment.number %></td>
-      <td class="text-right"><%= @invoice.payment.expiry_month.to_s + "/" + @invoice.payment.expiry_year.to_s %></td>
+      <td class="text-right"><%= @invoice.payment.expiry.month.to_s + "/" + @invoice.payment.expiry.year.to_s %></td>
       <td class="text-right"><%= @invoice.payment.cvv %></td>
     </tr>
   </table>
