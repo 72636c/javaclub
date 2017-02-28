@@ -3,7 +3,7 @@ class CreateOrders < ActiveRecord::Migration[5.0]
     create_table :orders do |t|
       t.string :style
       t.string :strength
-      t.integer :quantity
+      t.integer :quantity, :limit => 2
       t.timestamps
     end
   end

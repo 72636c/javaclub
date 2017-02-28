@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 20170223023246) do
 
   create_table "invoices", force: :cascade do |t|
+    t.string  "uuid",       limit: 36
     t.integer "order_id"
     t.integer "payment_id"
     t.index ["order_id"], name: "index_invoices_on_order_id"
@@ -22,18 +23,17 @@ ActiveRecord::Schema.define(version: 20170223023246) do
   create_table "orders", force: :cascade do |t|
     t.string   "style"
     t.string   "strength"
-    t.integer  "quantity"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "quantity",   limit: 2
+    t.datetime "created_at",           null: false
+    t.datetime "updated_at",           null: false
   end
 
   create_table "payments", force: :cascade do |t|
-    t.bigint   "number"
-    t.integer  "expiry_month"
-    t.integer  "expiry_year"
-    t.integer  "cvv"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.string   "number",     limit: 19
+    t.date     "expiry"
+    t.string   "cvv",        limit: 4
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
   end
 
 end
