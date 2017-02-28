@@ -106,26 +106,38 @@ class Cafe < Sinatra::Base
     elsif request.content_type =~ /x-www-form-urlencoded/
       style = params[:style]
       strength = params[:strength]
-      quantity = params[:quantity].to_i
+      quantity = params[:quantity]
     end
 
     # TODO: investigate ActiveRecord validation
     return status 400 unless Order.valid(style, strength, quantity)
 
+    quantity = quantity.to_i
     order = Order.create(style: style, strength: strength, quantity: quantity)
+    invoice_uuid = Invoice.uuid
+    while Invoice.exists?(uuid: invoice_uuid)
+      invoice_uuid = Invoice.uuid
+    end
+    invoice = Invoice.create(uuid: invoice_uuid, order: order)
 
-    # TODO: generate GUID
-    redirect "/payment/#{order.id}", 302
+    redirect "/payment/#{invoice_uuid}", 302
 
   end
 
-  get "/payment/:id" do
+  get "/payment/:uuid" do
 
     return status 406 unless request.accept?("application/json")
 
-    order_id = params[:id]
+    invoice_uuid = params[:uuid]
 
-    return status 400 unless order_id && Order.exists?(order_id)
+    return status 404 unless !(invoice_uuid.to_s.empty?) && Invoice.exists?(uuid: invoice_uuid)
+
+    invoice = Invoice.find_by(uuid: invoice_uuid)
+
+    if invoice.payment
+      redirect "/invoice/#{invoice_uuid}", 302
+      return
+    end
 
     payment =
     {
@@ -138,7 +150,7 @@ class Cafe < Sinatra::Base
     meta =
     [
       {
-        :url => "/payment/#{order_id}",
+        :url => "/payment/#{invoice_uuid}",
         :methods => ["POST"]
       }
     ]
@@ -149,17 +161,20 @@ class Cafe < Sinatra::Base
 
   end
 
-  post "/payment/:id" do
+  post "/payment/:uuid" do
 
     return status 406 unless request.accept?("application/json")
 
-    order_id = params[:id]
+    invoice_uuid = params[:uuid]
 
-    return status 400 unless order_id && Order.exists?(order_id)
-    
-    order = Order.find(order_id)
+    return status 400 unless !(invoice_uuid.to_s.empty?) && Invoice.exists?(uuid: invoice_uuid)
 
-    return status 400 unless request.body.size > 0
+    invoice = Invoice.find_by(uuid: invoice_uuid)
+
+    if invoice.payment
+      redirect "/invoice/#{invoice_uuid}", 302
+      return
+    end
 
     if request.content_type =~ /json/
       begin
@@ -172,32 +187,38 @@ class Cafe < Sinatra::Base
         return status 400
       end
     elsif request.content_type =~ /x-www-form-urlencoded/
-      number = params[:number].to_i
-      expiry_month = params[:expiry_month].to_i
-      expiry_year = params[:expiry_year].to_i
-      cvv = params[:cvv].to_i
+      number = params[:number]
+      expiry_month = params[:expiry_month]
+      expiry_year = params[:expiry_year]
+      cvv = params[:cvv]
     end
 
     # TODO: investigate ActiveRecord validation
     return status 400 unless Payment.valid(number, expiry_month, expiry_year, cvv)
 
-    payment = Payment.create(number: number, expiry_month: expiry_month, expiry_year: expiry_year, cvv: cvv)
-    invoice = Invoice.create(order: order, payment: payment)
+    expiry = Date.civil(expiry_year.to_i, expiry_month.to_i, -1)
+    payment = Payment.create(number: number, expiry: expiry, cvv: cvv)
+    invoice.payment = payment
+    invoice.save
 
-    # TODO: generate GUID
-    redirect "/invoice/#{invoice.id}", 302
+    redirect "/invoice/#{invoice_uuid}", 302
 
   end
 
-  get "/invoice/:id" do
+  get "/invoice/:uuid" do
 
     return status 406 unless request.accept?("application/json")
 
-    invoice_id = params[:id]
+    invoice_uuid = params[:uuid]
     
-    return status 400 unless invoice_id && Invoice.exists?(invoice_id)
+    return status 404 unless !(invoice_uuid.to_s.empty?) && Invoice.exists?(uuid: invoice_uuid)
 
-    @invoice = Invoice.find(invoice_id)
+    @invoice = Invoice.find_by(uuid: invoice_uuid)
+
+    if !(@invoice.payment)
+      redirect "/payment/#{invoice_uuid}", 302
+      return
+    end
 
     meta =
     [

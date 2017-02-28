@@ -2,31 +2,31 @@
 
 class Payment < ActiveRecord::Base
 
+  # string requirement hopefully prevents leading zeroes from being dropped
   ValidNumber = Proc.new do |number|
-    number.is_a?(Numeric) && number >= 0
+    number.is_a?(String) && /^(\d)+$/ === number && number.size.between?(7, 19)
   end
 
-  ValidExpiryMonth = Proc.new do |month|
-    month.is_a?(Numeric) && month.between?(1, 12)
+  # does not guarantee data type; use Date.civil(year.to_i, month.to_i, -1) when creating a Payment
+  ValidExpiry = Proc.new do |month, year|
+    /^(\d)+$/ === month.to_s && month.to_i.between?(1, 12) &&
+    /^(\d)+$/ === year.to_s && year.to_i.between?(Date.today.year, 9999) &&
+    Date.civil(year.to_i, month.to_i, -1) >= Date.today
   end
 
-  ValidExpiryYear = Proc.new do |year|
-    year.is_a?(Numeric) && year >= 1900
-  end
-
+  # string requirement hopefully prevents leading zeroes from being dropped
   ValidCVV = Proc.new do |cvv|
-    cvv.is_a?(Numeric) && cvv.to_s.size.between?(3, 4)
+    cvv.is_a?(String) && /^(\d)+$/ === cvv && cvv.size.between?(3, 4)
   end
 
   def self.valid(number, expiry_month, expiry_year, cvv)
     ValidNumber.call(number) &&
-    ValidExpiryMonth.call(expiry_month) &&
-    ValidExpiryYear.call(expiry_year) &&
+    ValidExpiry.call(expiry_month, expiry_year) &&
     ValidCVV.call(cvv)
   end
 
   def to_s
-    "paid via #{self.number}, #{self.expiry_month}/#{self.expiry_year}, #{self.cvv}"
+    "paid via #{self.number}, #{self.expiry.month}/#{self.expiry.year}, #{self.cvv}"
   end
 
 end

@@ -6,15 +6,16 @@ class Order < ActiveRecord::Base
   STRENGTHS = ["mild", "medium", "strong"]
 
   ValidStyle = Proc.new do |style|
-    STYLES.include?(style)
+    style.is_a?(String) && STYLES.include?(style)
   end
 
   ValidStrength = Proc.new do |strength|
-    STRENGTHS.include?(strength)
+    strength.is_a?(String) && STRENGTHS.include?(strength)
   end
 
+  # does not guarantee data type; use to_i when creating an Order
   ValidQuantity = Proc.new do |quantity|
-    quantity.is_a?(Numeric) && quantity > 0
+    /^[+]?(\d)+$/ === quantity.to_s && quantity.to_i.between?(1, 9999)
   end
 
   def self.valid(style, strength, quantity)

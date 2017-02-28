@@ -59,7 +59,7 @@ describe "Cafe" do
     # POST /payment -> GET /invoice
     body =
     {
-      :payment => {:number => 1234123412341234, :expiry_month => 12, :expiry_year => 1900, :cvv => 123},
+      :payment => {:number => "1234123412341234", :expiry_month => Date.today.month, :expiry_year => Date.today.year, :cvv => "123"},
       :meta => [{:url => url, :methods => ["POST"]}]
     }
     post url, body.to_json, {"CONTENT_TYPE" => "application/json"}
