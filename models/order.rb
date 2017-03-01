@@ -15,7 +15,7 @@ class Order < ActiveRecord::Base
 
   # does not guarantee data type; use to_i when creating an Order
   ValidQuantity = Proc.new do |quantity|
-    /^[+]?(\d)+$/ === quantity.to_s && quantity.to_i.between?(1, 9999)
+    /^(\+)?(\d)+$/ === quantity.to_s && quantity.to_i.between?(1, 9999)
   end
 
   def self.valid(style, strength, quantity)
