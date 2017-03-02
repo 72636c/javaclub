@@ -1,0 +1,36 @@
+body
+{
+  color: black;
+}
+
+table tr:first-child > th
+{
+  background-color: rgb(169, 148, 143);
+}
+
+th, td
+{
+  border: 0.1rem solid rgb(65, 53, 60);
+}
+
+input[type="text"]
+{
+  background-color: white;
+  color: black;
+  border: 0.2rem solid rgb(169, 148, 143);
+}
+
+input[type="text"]:focus
+{
+  background-color: rgb(169, 148, 143);
+}
+
+ul.options li
+{
+  background-color: rgb(239, 240, 241);
+}
+
+#content
+{
+  background-color: white;
+}
