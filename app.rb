@@ -17,8 +17,6 @@ class Cafe < Sinatra::Base
     @css_theme = request.cookies["theme"]
     if @css_theme.blank? then @css_theme = "day" end
 
-    puts "#{request.fullpath} #{request.cookies}"
-
     pass
 
   end
