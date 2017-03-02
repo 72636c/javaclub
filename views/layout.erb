@@ -2,8 +2,10 @@
   <head>
     <title>The Java Club</title>
     <link rel="stylesheet" type="text/css" href="/assets/common/css/default.css">
+    <link rel="stylesheet" type="text/css" href="<%= "/assets/common/css/" + @css_theme  + ".css" %>">
     <link rel="icon" type="image/png" href="/assets/common/img/favicon-32x32.png" sizes="32x32" />
     <link rel="icon" type="image/png" href="/assets/common/img/favicon-16x16.png" sizes="16x16" />
+    <script src="/assets/common/js/script.js"></script>
   </head>
   <body>
     <header>
@@ -25,6 +27,13 @@
     <footer>
       <div class="wrap">
         <div class="col-2">
+          <details>
+            <summary>Theme</summary>
+            <p>
+              <button onclick="changeTheme('day')">🌄</button>
+              <button onclick="changeTheme('night')">🌃</button>
+            </p>
+          </details>
           <details>
             <summary>JSON</summary>
             <pre><code id="json-response"><%= @json_response %></code></pre>

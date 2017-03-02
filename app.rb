@@ -12,14 +12,29 @@ class Cafe < Sinatra::Base
 
   register Sinatra::ActiveRecordExtension
 
+  before do
+
+    @css_theme = request.cookies["theme"]
+    if @css_theme.blank? then @css_theme = "day" end
+
+    puts "#{request.fullpath} #{request.cookies}"
+
+    pass
+
+  end
+
   error 400 do
+
     status 400
     erb :"400"
+
   end
 
   not_found do
+
     status 404
     erb :"404"
+
   end
 
   get "/" do
@@ -130,7 +145,7 @@ class Cafe < Sinatra::Base
 
     invoice_uuid = params[:uuid]
 
-    return status 404 unless !(invoice_uuid.to_s.empty?) && Invoice.exists?(uuid: invoice_uuid)
+    return status 404 unless !(invoice_uuid.blank?) && Invoice.exists?(uuid: invoice_uuid)
 
     invoice = Invoice.find_by(uuid: invoice_uuid)
 
@@ -167,7 +182,7 @@ class Cafe < Sinatra::Base
 
     invoice_uuid = params[:uuid]
 
-    return status 400 unless !(invoice_uuid.to_s.empty?) && Invoice.exists?(uuid: invoice_uuid)
+    return status 400 unless !(invoice_uuid.blank?) && Invoice.exists?(uuid: invoice_uuid)
 
     invoice = Invoice.find_by(uuid: invoice_uuid)
 
@@ -211,7 +226,7 @@ class Cafe < Sinatra::Base
 
     invoice_uuid = params[:uuid]
     
-    return status 404 unless !(invoice_uuid.to_s.empty?) && Invoice.exists?(uuid: invoice_uuid)
+    return status 404 unless !(invoice_uuid.blank?) && Invoice.exists?(uuid: invoice_uuid)
 
     @invoice = Invoice.find_by(uuid: invoice_uuid)
 
