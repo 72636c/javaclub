@@ -234,6 +234,13 @@ input + input
   align-items: center;
 }
 
+.horizontal-scroller
+{
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 ul.options
 {
   padding: 0;
