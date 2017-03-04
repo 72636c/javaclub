@@ -241,6 +241,17 @@ input + input
   overflow-y: hidden;
 }
 
+.padder
+{
+  margin: 0 -1em -1em 0;
+  max-width: 100%;
+}
+
+.padder > *
+{
+  margin: 0 1em 1em 0;
+}
+
 ul.options
 {
   padding: 0;

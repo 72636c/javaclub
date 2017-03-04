@@ -9,11 +9,11 @@
   <form action="<%= request.fullpath %>" method="POST">
     <h3>Card Number</h3>
     <input type="text" name="number" placeholder="up to 19 digits" maxlength="19" />
-    <br />
     <h3>Expiry</h3>
-    <input type="text" name="expiry_month" placeholder="MM" maxlength="2" />
-    <input type="text" name="expiry_year" placeholder="YYYY" maxlength="4" />
-    <br />
+    <div class="padder">
+      <input type="text" name="expiry_month" placeholder="MM" maxlength="2" />
+      <input type="text" name="expiry_year" placeholder="YYYY" maxlength="4" />
+    </div>
     <h3>CVV</h3>
     <input type="text" name="cvv" placeholder="3–4 digits" maxlength="4" />
     <br />
