@@ -74,7 +74,7 @@ pre code
 }
 
 section,
-.wrap
+.wrapper
 {
   display: block;
   margin: 0 auto;
@@ -196,7 +196,7 @@ input + input
   margin-left: 1em;
 }
 
-.wrap
+.wrapper
 {
   margin: 0 auto;
 }
