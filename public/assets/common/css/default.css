@@ -1,3 +1,39 @@
+@media screen and (max-width: 959px)
+{
+  .col-2
+  {
+    flex: 1 0 100% !important;
+  }
+
+  .col-2:first-child
+  {
+    padding: 0 0 1em 0;
+  }
+
+  .col-2:last-child
+  {
+    padding: 1em 0 0 0;
+  }
+}
+
+@media screen and (min-width: 960px)
+{
+  .col-2
+  {
+    flex: 1 0 50%;
+  }
+
+  .col-2:first-child
+  {
+    padding: 0 1em 0 0;
+  }
+
+  .col-2:last-child
+  {
+    padding: 0 0 0 1em;
+  }
+}
+
 body
 {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
@@ -38,7 +74,7 @@ pre code
 }
 
 section,
-.wrap
+.wrapper
 {
   display: block;
   margin: 0 auto;
@@ -160,7 +196,7 @@ input + input
   margin-left: 1em;
 }
 
-.wrap
+.wrapper
 {
   margin: 0 auto;
 }
@@ -192,7 +228,28 @@ input + input
 
 .container
 {
-  display: table;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.horizontal-scroller
+{
+  white-space: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.padder
+{
+  margin: 0 -1em -1em 0;
+  max-width: 100%;
+}
+
+.padder > *
+{
+  margin: 0 1em 1em 0;
 }
 
 ul.options
@@ -214,26 +271,14 @@ footer summary
   text-transform: uppercase;
 }
 
-footer .col-2
+footer .container
 {
-  vertical-align: top;
+  align-items: flex-start;
 }
 
 .col-2
 {
-  display: table-cell;
-  width: 50%;
-  vertical-align: middle;
-}
-
-.col-2:first-child
-{
-  padding-right: 1em;
-}
-
-.col-2:last-child
-{
-  padding-left: 1em;
+  box-sizing: border-box;
 }
 
 .col-2 img
