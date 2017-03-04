@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>The Java Club</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/assets/common/css/default.css">
     <link rel="stylesheet" type="text/css" id="stylesheet-theme" href="<%= "/assets/common/css/" + @css_theme  + ".css" %>">
     <link rel="icon" type="image/png" href="/assets/common/img/favicon-32x32.png" sizes="32x32" />
@@ -9,7 +10,7 @@
   </head>
   <body>
     <header>
-      <div class="wrap">
+      <div class="wrapper">
         <div class="left">
           <a id="logo" href="/"><img src="/assets/common/img/logo.png" alt="Logo"></a>
         </div>
@@ -25,7 +26,7 @@
       <%= yield %>
     </div>
     <footer>
-      <div class="wrap">
+      <div class="wrapper container">
         <div class="col-2">
           <details>
             <summary>Theme</summary>
