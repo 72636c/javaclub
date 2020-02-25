@@ -22,5 +22,5 @@ end
 
 group :test, :production do
   gem "pg"
-  gem "rake"
+  gem "rake", ">= 12.3.3"
 end
