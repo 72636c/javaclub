@@ -15,7 +15,7 @@ group :development do
 end
 
 group :test do
-  gem "nokogiri"
+  gem "nokogiri", ">= 1.10.8"
   gem "rack-test"
   gem "rspec"
 end
