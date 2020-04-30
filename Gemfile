@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 ruby ">=2.2.2"
 
-gem "json"
+gem "json", ">= 2.3.0"
 gem "activerecord"
 gem "sinatra"
 gem "sinatra-activerecord"
