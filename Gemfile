@@ -3,9 +3,9 @@ source "https://rubygems.org"
 ruby ">=2.2.2"
 
 gem "json"
-gem "activerecord"
+gem "activerecord", ">= 5.2.4.5"
 gem "sinatra"
-gem "sinatra-activerecord"
+gem "sinatra-activerecord", ">= 2.0.12"
 gem "sinatra-flash"
 gem "sinatra-redirect-with-flash"
 
