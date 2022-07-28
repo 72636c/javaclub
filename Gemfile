@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby ">=2.2.2"
 
 gem "json"
-gem "activerecord"
+gem "activerecord", ">= 5.2.8.1"
 gem "sinatra"
 gem "sinatra-activerecord"
 gem "sinatra-flash"
