@@ -4,8 +4,8 @@ ruby ">=2.2.2"
 
 gem "json"
 gem "activerecord"
-gem "sinatra"
-gem "sinatra-activerecord"
+gem "sinatra", ">= 4.0.0"
+gem "sinatra-activerecord", ">= 2.0.13"
 gem "sinatra-flash"
 gem "sinatra-redirect-with-flash"
 
