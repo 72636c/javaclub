@@ -4,8 +4,8 @@ ruby ">=2.2.2"
 
 gem "json"
 gem "activerecord"
-gem "sinatra"
-gem "sinatra-activerecord"
+gem "sinatra", ">= 2.0.0"
+gem "sinatra-activerecord", ">= 2.0.13"
 gem "sinatra-flash"
 gem "sinatra-redirect-with-flash"
 
@@ -16,7 +16,7 @@ end
 
 group :test do
   gem "nokogiri"
-  gem "rack-test"
+  gem "rack-test", ">= 2.0.0"
   gem "rspec"
 end
 
